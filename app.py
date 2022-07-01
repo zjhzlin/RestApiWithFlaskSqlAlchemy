@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import os
@@ -55,11 +55,17 @@ def add_product():
     return product_schema.jsonify(new_product)
 
 #Get all products
-@app.route('/product', methods=['GET'])
+@app.route('/contents', methods=['GET'])
 def get_products():
     all_products = Product.query.all()
     result = products_schema.dump(all_products)
-    return jsonify(result)
+    # return jsonify(result)
+    return render_template("contents.html", products = all_products)
+
+@app.route('/content/<string:id>/')
+def content(id):
+    return render_template("content.html", id = id)
+
 
 #Get one product
 @app.route('/product/<id>', methods=['GET'])
@@ -92,6 +98,14 @@ def delete_product(id):
     db.session.delete(product)
     db.session.commit()
     return product_schema.jsonify(product)
+
+@app.route('/')
+def index():
+    return render_template("home.html")
+
+@app.route('/about')
+def about():
+    return render_template("about.html")
 
 # Run server
 if __name__ == '__main__':

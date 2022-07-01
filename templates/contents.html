@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block title %} Contents {% endblock%}
+
+{% block content %}
+    <h1> Contents </h1>
+    <ul class = "list-group">
+        {% for product in products %}
+        <li class = "list-group-item"> <a href = "content/{{product.id}}"> {{ product.name }} </a></li>
+        {% endfor %}
+    </ul>
+
+
+{% endblock %}
